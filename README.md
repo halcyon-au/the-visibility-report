@@ -10,3 +10,9 @@ We want to give an insight to information that we take for granted being blocked
 
 - Kevin (kevinle-1)
 - Jonathan (Techypanda)
+
+## Attributions
+
+All OONI data used is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+© 2022 Open Observatory of Network Interference (OONI)
