@@ -1,0 +1,117 @@
+$primary-color: black;
+$secondary-color: white;
+
+#home {
+    padding-left: 8em;
+    padding-right: 8em;
+
+    #content {
+        animation: css-visible 0s 0.7s forwards;
+        visibility: hidden;
+    }
+
+    #inputbox {
+        ::selection {
+            color: black;
+            background: white;
+        }
+
+        input {
+            text-transform: uppercase;
+        }
+
+        input:focus {
+            outline: none;
+        }
+    }
+
+    #footer {
+        display: flex;
+
+        opacity: 0;
+        animation: fade-in 1s;
+        animation-fill-mode: forwards;
+        animation-delay: 1.2s;
+
+        color: gray;
+
+        margin-top: -3em;
+        margin-left: 23em;
+
+        h1 {
+            padding-right: 1em;
+        }
+
+        a:hover {
+            color: black;
+        }
+    }
+
+    #ooni-attrib {
+        opacity: 0;
+        margin-left: 23.5em;
+
+        animation: fade-in 1s;
+        animation-fill-mode: forwards;
+        animation-delay: 1.2s;
+    }
+}
+
+.rev-block span {
+    opacity: 0;
+    animation: appear-text 0.0001s linear forwards;
+}
+
+.rev-block:after {
+    content: '';
+    margin-top: -5.2em;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    position: absolute ;
+    width: 0%;
+    height: 5.2em;
+    background: black;
+    animation: rev-block 1.5s cubic-bezier(0.2, 1, 0.2, 1) forwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes rev-block {
+    0% {
+      left: 0;
+      width: 0%;
+    }
+    50% {
+      left: 0;
+      width: 100%;
+    }
+    100% {
+      left: 100%;
+      width: 0%;
+    }
+}
+
+@keyframes appear-text {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+
+@keyframes css-visible {
+    to {
+        visibility: visible;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}
