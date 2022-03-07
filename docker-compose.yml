@@ -8,11 +8,11 @@ services:
     command: [ "npm", "run", "dev" ]
     ports:
       - '3000:3000'
-  backend:
-    build:
-      context: ./api/
-    volumes:
-      - './api:/app'
-    command: [ "./init.sh" ]
-    ports:
-      - "1323:1323"
+  # backend:
+  #   build:
+  #     context: ./api/
+  #   volumes:
+  #     - './api:/app'
+  #   command: [ "./init.sh" ]
+  #   ports:
+  #     - "1323:1323"
