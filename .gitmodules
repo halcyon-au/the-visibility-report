@@ -1,6 +1,8 @@
 [submodule "api"]
 	path = api
 	url = https://github.com/kevinle-1/the-visibility-report-api.git
+	branch = main
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/kevinle-1/the-visibility-report-frontend.git
+	branch = main
