@@ -4,6 +4,10 @@ import { useCountries } from '../api/ooni';
 import countryJSON from "../api/countrytoflag.json";
 import { useState } from 'react';
 
+import ooni from '../assets/img/ooni.svg';
+import '../assets/styles/landing.scss';
+
+
 function Landing(props: LandingProps) {
   const navigate = useNavigate();
   const countries = useCountries();
@@ -25,28 +29,39 @@ function Landing(props: LandingProps) {
   return (
     <div id="home" className={`sm:container mx-auto ${props.className}`}>
       <div className="flex h-screen justify-center items-center">
-        <div className="w-full">
-          <div className="flex">
-            <h1 className="text-5xl my-auto">THE VISIBILITY REPORT</h1>
-            <div className="mx-10 flex-1">
-              <div className="flex">
-                <input type="text" onKeyPress={(e) => e.key === "Enter" ? doSearchLogic() : undefined} list="observabilitymode" className="text-4xl bg-black text-white px-8 py-5 w-full appearance-none placeholder:text-white" placeholder="Enter Country/Site" onChange={detectIfDatalistOption} />
-                <button className="material-icons text-white text-4xl bg-black px-8" onClick={() => doSearchLogic()}>&#xe8b6;</button>
+      <div className="w-full">
+        <div className="rev-block">
+            <div id="content" className="flex">
+              <h1 className="text-5xl my-auto"><span>THE VISIBILITY REPORT</span></h1>
+              <div className="mx-10 flex-1">
+                <div id="inputbox" className="flex">
+                  <input type="text" onKeyPress={(e) => e.key === "Enter" ? doSearchLogic() : undefined} list="observabilitymode" className="text-4xl bg-black text-white px-8 py-5 w-full appearance-none placeholder:text-white" placeholder="ENTER COUNTRY/SITE" onChange={detectIfDatalistOption} />
+                  <button className="material-icons text-white text-4xl bg-black px-8" onClick={() => doSearchLogic()}>&#xe5c8;</button>
+                </div>
+                {props.SEARCH_MODE != "Site" ?
+                  <datalist aria-label="select observability mode" id="observabilitymode" className="text-4xl bg-black text-white px-8 py-5 w-full appearance-none"> { /* HTML datalists cant be styled... */}
+                    {countries.countries.map((country) => <option key={country.alpha_2} value={country.name}>
+                      {country.name} - {countryJSON[country.alpha_2 as "AC"].emoji}
+                    </option>)}
+                  </datalist> : <></>}
               </div>
-              {props.SEARCH_MODE != "Site" ?
-                <datalist aria-label="select observability mode" id="observabilitymode" className="text-4xl bg-black text-white px-8 py-5 w-full appearance-none"> { /* HTML datalists cant be styled... */}
-                  {countries.countries.map((country) => <option key={country.alpha_2} value={country.name}>
-                    {country.name} - {countryJSON[country.alpha_2 as "AC"].emoji}
-                  </option>)}
-                </datalist> : <></>}
-              <div className="absolute mt-8 ml-12">
-                <h2>Powered By</h2>
-                <img src="/ooni.svg" width="100" id="ooni" />
-              </div>
+              <span className="material-icons text-4xl my-auto">&#xe01d;</span>
             </div>
-            <span className="material-icons text-4xl my-auto">&#xe01d;</span>
+
+            <div id="ooni-attrib" className="absolute mt-8">
+              <h2>POWERED BY</h2>
+              <a href="https://ooni.org/data/" target="_blank">
+                <img src={ooni} width="100" id="ooni" />
+              </a>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div id="footer">
+        <h1>©2022</h1>
+        <h1>#STANDWITHUKRAINE 🇺🇦</h1>
+        <a href="https://github.com/halcyon-au/the-visibility-report" target="_blank"><h1>SOURCE</h1></a>
       </div>
     </div>
   )
