@@ -16,3 +16,12 @@ We want to give an insight to information that we take for granted being blocked
 All OONI data used is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
 © 2022 Open Observatory of Network Interference (OONI)
+
+## How To Run
+
+API runs on golang but if you have docker you can avoid installing it
+Frontend runs on node but if you have docker you can avoid installing it
+``sh
+docker-compose build
+docker-compose up
+``
