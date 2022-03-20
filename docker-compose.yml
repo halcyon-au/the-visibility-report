@@ -2,9 +2,9 @@ version: "3.9"
 services:
   frontend:
     build:
-      context: ./frontend/
+      context: .
     volumes:
-      - './frontend/src:/app/src'
+      - './src:/app/src'
     command: [ "npm", "run", "dev" ]
     ports:
       - '3000:3000'
