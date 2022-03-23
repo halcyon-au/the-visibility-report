@@ -16,15 +16,6 @@ function CountriesRanked(props: DefaultProps) {
         </p>
         {!loading ?
           <div id="rankings" className="grid grid-cols-3">
-            {/* <div>col 1</div>
-            <div>col 2</div>
-            <div>col 3</div>
-            <div>col 4</div>
-            <div>col 5</div>
-            <div>col 6</div>
-            <div>col 7</div>
-            <div>col 8</div>
-            <div>col 9</div> */}
             <Ranking key={data![1].CountryName} countryRank={data![1]} number={2} />
             <Ranking key={data![0].CountryName} countryRank={data![0]} number={1} />
             <Ranking key={data![2].CountryName} countryRank={data![2]} number={3} />
