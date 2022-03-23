@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import CountriesRanked from "./pages/CountriesRanked";
 import Country from "./pages/Country";
 import Landing from "./pages/Landing"
 import Site from "./pages/Site";
@@ -11,6 +12,7 @@ export default function Router() {
         <Route index element={<Landing />} />
         <Route path="/country" element={<Country />} />
         <Route path="/site" element={<Site />} />
+        <Route path="/country/rankings" element={<CountriesRanked />} />
       </Routes>
     </BrowserRouter>
   )
