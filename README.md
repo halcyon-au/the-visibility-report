@@ -27,3 +27,7 @@ docker-compose up
 All OONI data used is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 
 © 2022 Open Observatory of Network Interference (OONI)
+
+## Design
+Kevin Le  
+https://www.figma.com/file/LPcwY2FRAmY1vBPmzZEPah/The-Visibility-Report
