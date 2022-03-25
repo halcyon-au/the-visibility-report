@@ -2,6 +2,7 @@ name: ci
 
 on:
   push:
+  pull_request:
 
 concurrency:
   group: environment-${{ github.ref }}-${{ github.workflow }}
