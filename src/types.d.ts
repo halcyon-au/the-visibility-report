@@ -1,6 +1,9 @@
 interface DefaultProps {
   className?: string;
 }
+interface IndividualCountryProps extends DefaultProps {
+  country: CountryRankingWBlocks
+}
 interface RankingProps extends DefaultProps {
   countryRank: CountryRanking;
   number: number;
@@ -16,4 +19,11 @@ interface OONICountry {
 interface CountryRanking {
   CountryName: string;
   Score: number;
+  Ranking: number;
+}
+interface CountryRankingWBlocks {
+  CountryName: string;
+  Score: number;
+  Ranking: number;
+  BlockedWebsites: string[]
 }
