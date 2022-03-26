@@ -14,7 +14,7 @@ export function useRankings() {
     const [data, setData] = useState<CountryRanking[]>();
     const [error, setError] = useState("");
     const fetchData = async () => {
-    // exponential backoff with jitter
+        // exponential backoff with jitter
         axiosRetry(axios, {
             retries: 3,
             retryDelay: (retryCount) => {
@@ -35,4 +35,30 @@ export function useRankings() {
         fetchData();
     }, []);
     return { data, loading, error };
+}
+export function useRanking(countryName: string) {
+    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState<CountryRankingWBlocks>();
+    const [error, setError] = useState("");
+    const fetchData = async (countryName: string) => {
+        axiosRetry(axios, {
+            retries: 3,
+            retryDelay: (retryCount) => {
+                return Math.random() * (Math.min(10000, 1000 * (retryCount ** 2))); // https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
+            }
+        });
+        const uri = new URL(`v1/countries/rankings/${countryName}`, API_URI);
+        try {
+            const request = await axios.get(uri.href);
+            setData(request.data as CountryRankingWBlocks);
+        } catch (error) {
+            setError(JSON.stringify((error as AxiosError).response?.data))
+        } finally {
+            setLoading(false);
+        }
+    }
+    useEffect(() => {
+        fetchData(countryName);
+    }, []);
+    return { loading, data, error }
 }
