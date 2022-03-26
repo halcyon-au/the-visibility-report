@@ -52,13 +52,13 @@ export function useRanking(countryName: string) {
             const request = await axios.get(uri.href);
             setData(request.data as CountryRankingWBlocks);
         } catch (error) {
-            setError(JSON.stringify((error as AxiosError).response?.data))
+            setError(JSON.stringify((error as AxiosError).response?.data));
         } finally {
             setLoading(false);
         }
-    }
+    };
     useEffect(() => {
         fetchData(countryName);
     }, []);
-    return { loading, data, error }
+    return { loading, data, error };
 }
