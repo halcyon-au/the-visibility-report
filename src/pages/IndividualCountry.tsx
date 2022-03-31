@@ -6,23 +6,23 @@ import Error from "../components/country/Error";
 
 
 function IndividualCountry(props: DefaultProps) {
-    const { country } = useParams();
-    const { error, data, loading } = useRanking(country!);
-    return (
-        <>
-            {loading ?
-                <>TODO LOADER</>
-                : <>
-                    {error ?
-                        <Error />
-                        : <>
-                            <Country country={data!} />
-                        </>
-                    }
-                </>
-            }
+  const { country } = useParams();
+  const { error, data, loading } = useRanking(country!);
+  return (
+    <>
+      {loading ?
+        <>TODO LOADER</>
+        : <>
+          {error ?
+            <Error />
+            : <>
+              <Country country={data!} />
+            </>
+          }
         </>
-    );
+      }
+    </>
+  );
 }
 export default styled(IndividualCountry)`
 `;
