@@ -21,9 +21,17 @@ interface CountryRanking {
   Score: number;
   Ranking: number;
 }
+interface WebsiteEntry extends DefaultProps {
+  blocked?: boolean
+  website: string;
+  websiteIcon?: string;
+}
 interface CountryRankingWBlocks {
   CountryName: string;
   Score: number;
   Ranking: number;
-  BlockedWebsites: string[]
+  BlockedWebsites: string[];
+  BlockedMapping: Map<string, boolean>;
+  UnblockedWebsites: string[];
+  Websites: string[];
 }

@@ -7,15 +7,15 @@ import Site from "./pages/Site";
 
 // Todo: nice page nav animation (fade)
 export default function Router() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route index element={<Landing />} />
-                <Route path="/country" element={<Country />} />
-                <Route path="/country/:country" element={<IndividualCountry />} />
-                <Route path="/site" element={<Site />} />
-                <Route path="/country/rankings" element={<CountriesRanked />} />
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Landing />} />
+        <Route path="/country" element={<Country />} />
+        <Route path="/country/:country" element={<IndividualCountry />} />
+        <Route path="/site" element={<Site />} />
+        <Route path="/country/rankings" element={<CountriesRanked />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }

@@ -4,9 +4,9 @@ import "./tailwind.css";
 import "./assets/styles/global.scss";
 
 function App() {
-    return (
-        <Router />
-    );
+  return (
+    <Router />
+  );
 }
 
 export default App;
