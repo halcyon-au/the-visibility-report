@@ -5,7 +5,7 @@ function WebsiteEntry(props: WebsiteEntry) {
   const today = new Date();
   return (
     <div id={website} className={className}>
-      <div className="bg-black p-5 w-72 relative">
+      <div className="bg-black p-5 h-36 relative">
         <div className="flex items-center">
           <h3 className="text-white text-2xl mr-2">{website.toUpperCase().replace("HTTP://", "").replace("HTTPS://", "").replace("/", "").replace("WWW.", "")}</h3>
           {websiteIcon ? <img width="25" src={websiteIcon} alt={website} /> : <></>}
