@@ -22,16 +22,21 @@ interface CountryRanking {
   Ranking: number;
 }
 interface WebsiteEntry extends DefaultProps {
-  blocked?: boolean
+  blocked?: WebsiteStatus;
   website: string;
   websiteIcon?: string;
+}
+interface WebsiteStatus {
+  Blocked: boolean;
+  Possible?: boolean;
 }
 interface CountryRankingWBlocks {
   CountryName: string;
   Score: number;
   Ranking: number;
   BlockedWebsites: string[];
-  BlockedMapping: Map<string, boolean>;
+  BlockedMapping: Map<string, WebsiteStatus>;
   UnblockedWebsites: string[];
+  PossibleWebsites: string[];
   Websites: string[];
 }

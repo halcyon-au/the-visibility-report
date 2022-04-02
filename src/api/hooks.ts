@@ -51,12 +51,18 @@ export function useRanking(countryName: string) {
     try {
       const request = await axios.get(uri.href);
       const resp = request.data as CountryRankingWBlocks;
-      const blockedMap = new Map<string, boolean>();
+      const blockedMap = new Map<string, WebsiteStatus>();
       for (const web of resp.Websites) {
-        let blocked = false;
+        let blocked: WebsiteStatus = { Blocked: false };
         for (const bWeb of resp.BlockedWebsites) {
           if (bWeb.toUpperCase() === web.toUpperCase()) { 
-            blocked = true;
+            blocked = { Blocked: true };
+            break;
+          }
+        }
+        for (const pWeb of resp.PossibleWebsites) {
+          if (pWeb.toUpperCase() === web.toUpperCase()) {
+            blocked.Possible = true;
             break;
           }
         }

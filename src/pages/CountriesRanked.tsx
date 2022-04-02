@@ -9,10 +9,11 @@ function CountriesRanked() {
     <>
       <TopBar />
       <div id="container" className="container mx-auto">
-        <h3 className="text-3xl mt-8 mb-4">COUNTRIES WITH THE LEAST BLOCKS ON CONTENT</h3>
+        <h3 className="text-3xl mt-8 mb-4">COUNTRIES WITH THE MOST BLOCKS ON CONTENT</h3>
         <p>
           Countries here are scored based on the amount of limits they have placed on content.<br />
-          There are many other factors to consider that affect the freedom of the internet.
+          There are many other factors to consider that affect the freedom of the internet.<br/>
+          Please Note we are ranking on Anomaly and Confirmed and OONI&apos;s data is somewhat inaccurate.
         </p>
         { /* TODO: remove */}
         {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
