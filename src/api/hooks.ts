@@ -48,7 +48,7 @@ export function useBlocked(countryName: string, websiteName: string) {
       const resp = request.data;
       setData(resp);
     } catch (error) {
-      setError(error.message);
+      setError(error as string);
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ export function useWhoBlockedMe(websiteName: string) {
       console.log(p);
       console.log(uk);
     } catch (error) {
-      setError(error);
+      setError(error as string);
     } finally {
       setLoading(false);
     }
