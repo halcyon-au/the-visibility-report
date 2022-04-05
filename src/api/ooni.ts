@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const OONI_URI = "https://api.ooni.io/";
+export const OONI_URI = "https://api.ooni.io/";
 export function useCountries() {
   const [countryData, setCountryData] = useState<{ loading: boolean, countries: OONICountry[] }>({ loading: true, countries: [] });
   useEffect(() => {

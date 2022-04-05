@@ -1667,6 +1667,18 @@
     "unicode": "U+1F1E6 U+1F1FF",
     "image": "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AZ.svg"
   },
+  "Bosnia": {
+    "name": "Bosnia & Herzegovina",
+    "emoji": "🇧🇦",
+    "unicode": "U+1F1E7 U+1F1E6",
+    "image": "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BA.svg"
+  },
+  "Herzegovina": {
+    "name": "Bosnia & Herzegovina",
+    "emoji": "🇧🇦",
+    "unicode": "U+1F1E7 U+1F1E6",
+    "image": "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/BA.svg"
+  },
   "Bosnia & Herzegovina": {
     "name": "Bosnia & Herzegovina",
     "emoji": "🇧🇦",

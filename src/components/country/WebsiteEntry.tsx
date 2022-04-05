@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-function WebsiteEntry(props: WebsiteEntry) {
+function WebsiteEntry(props: WebsiteEntryProps) {
   const { blocked, website, className, websiteIcon } = props;
   const today = new Date();
   return (

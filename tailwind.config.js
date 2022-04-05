@@ -18,6 +18,7 @@ module.exports = {
       blocked: "#FF0000",
       unblocked: "#00BF00",
       possible: "#F08C00",
+      unknown: "#ADADAD",
     }
   },
   plugins: [],
