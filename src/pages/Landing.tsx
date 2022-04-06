@@ -16,7 +16,7 @@ function Landing(props: LandingProps) {
     if (countries.countries.some((v) => v.name.toUpperCase() === search?.toUpperCase())) {
       navigate(`/country/${search}`);
     } else if (props.SEARCH_MODE != "Country") {
-      navigate(`/site/${search}`);
+      navigate(`/site/${search}/`);
     }
   }
   function detectIfDatalistOption(e: React.ChangeEvent<HTMLInputElement>) {

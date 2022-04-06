@@ -1,6 +1,12 @@
 interface DefaultProps {
   className?: string;
 }
+interface SectionProps extends DefaultProps {
+  sectionItems: string[];
+}
+interface TopBarOverride extends DefaultProps {
+  overrideText?: string;
+}
 interface IndividualCountryProps extends DefaultProps {
   country: CountryRankingWBlocks
 }
@@ -21,14 +27,20 @@ interface CountryRanking {
   Score: number;
   Ranking: number;
 }
-interface WebsiteEntry extends DefaultProps {
+interface WebsiteEntryProps extends DefaultProps {
   blocked?: WebsiteStatus;
   website: string;
   websiteIcon?: string;
 }
+interface CountryEntryProps extends DefaultProps {
+  blocked?: WebsiteStatus;
+  country: string;
+  countryFlag?: string;
+}
 interface WebsiteStatus {
   Blocked: boolean;
   Possible?: boolean;
+  Unknown?: boolean;
 }
 interface CountryRankingWBlocks {
   CountryName: string;
@@ -39,4 +51,14 @@ interface CountryRankingWBlocks {
   UnblockedWebsites: string[];
   PossibleWebsites: string[];
   Websites: string[];
+}
+interface BlockedResponse {
+  isBlocked: boolean;
+  matchedWith: string;
+  simularity: number;
+  status: string;
+}
+interface WebsiteBlockedSectionProps extends DefaultProps {
+  blocked: string[];
+
 }

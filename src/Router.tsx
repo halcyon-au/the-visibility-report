@@ -4,6 +4,7 @@ import Country from "./pages/Country";
 import IndividualCountry from "./pages/IndividualCountry";
 import Landing from "./pages/Landing";
 import Site from "./pages/Site";
+import Website from "./pages/Website";
 
 // Todo: nice page nav animation (fade)
 export default function Router() {
@@ -15,6 +16,7 @@ export default function Router() {
         <Route path="/country/:country" element={<IndividualCountry />} />
         <Route path="/site" element={<Site />} />
         <Route path="/country/rankings" element={<CountriesRanked />} />
+        <Route path="/site/:site" element={<Website />} />
       </Routes>
     </BrowserRouter>
   );
