@@ -33,10 +33,10 @@ jobs:
         run: npm run build
 
       - name: Deploy Docs
-        run: |
-          git add docs
-          git commit -m "update static site"
-          git push -u origin HEAD:main
+        uses: peaceiris/actions-gh-pages@v3.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
 
   lint:
     runs-on: ubuntu-latest
