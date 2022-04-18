@@ -13,6 +13,5 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
-  // base: "/the-visibility-report/",
   plugins: [react()]
 });

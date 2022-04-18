@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "build": "tsc && vite build --base=/the-visibility-report/",
+    "preview": "vite preview --base=/the-visibility-report/",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/"
   },

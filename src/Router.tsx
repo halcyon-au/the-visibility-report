@@ -9,7 +9,7 @@ import Website from "./pages/Website";
 // Todo: nice page nav animation (fade)
 export default function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.MODE === "production" ? "/the-visibility-report/" : undefined}>
       <Routes>
         <Route index element={<Landing />} />
         <Route path="/country" element={<Country />} />
