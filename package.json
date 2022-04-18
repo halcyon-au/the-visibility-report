@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build --base=/the-visibility-report/ && shx cp index.html dist/404.html",
+    "build": "tsc && vite build --base=/the-visibility-report/ && shx cp dist/index.html dist/404.html",
     "preview": "vite preview --base=/the-visibility-report/",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/"
