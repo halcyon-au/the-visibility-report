@@ -13,6 +13,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
-  base: "/the-visibility-report/",
+  // base: "/the-visibility-report/",
   plugins: [react()]
 });
