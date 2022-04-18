@@ -32,6 +32,12 @@ jobs:
       - name: Run build
         run: npm run build
 
+      - name: Deploy Docs
+        run: |
+          git add docs
+          git commit -m "update static site"
+          git push -u origin HEAD:main
+
   lint:
     runs-on: ubuntu-latest
 
