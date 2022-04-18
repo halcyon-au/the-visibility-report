@@ -10,6 +10,9 @@ export default defineConfig({
       usePolling: true
     }
   },
+  build: {
+    outDir: "docs",
+  },
   base: "/the-visibility-report/",
   plugins: [react()]
 });

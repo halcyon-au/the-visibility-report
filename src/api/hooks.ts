@@ -1,15 +1,11 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import axiosRetry from "axios-retry";
 import { useEffect, useState } from "react";
 import { OONI_URI } from "./ooni";
 
 const API_URI = import.meta.env.MODE === "development" ? (() => {
-  return window.location.origin.startsWith("http://localhost") ? "http://localhost:1323/api/"
-    : (() => { throw Error("replace this when dev api exists"); })();
-})() : (() => {
-  throw Error("replace this when production api exists");
-  return "NOT DONE";
-})();
+  return window.location.origin.startsWith("http://localhost") ? "http://localhost:1323/api/" : "https://api.visibilityreport.techytechster.com/api/";
+})() : "https://api.visibilityreport.techytechster.com/api/";
 export function useRankings() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<CountryRanking[]>();
