@@ -11,7 +11,15 @@ const root = createRoot(container!);
 const theme = createTheme({
   typography: {
     fontFamily: "'IBM Plex Sans', sans-serif",
-  }
+  },
+  palette: {
+    // primary: {
+    //   main: "#000000",
+    // },
+    // text: {
+    //   primary: "#ffffff",
+    // },
+  },
 });
 
 root.render(

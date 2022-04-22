@@ -63,6 +63,7 @@ $secondary-color: white;
 }
 
 .rev-block:after {
+    z-index: 9999; // i dont know css i just put da big number
     content: '';
     margin-top: -5.2em;
     left: 0;
