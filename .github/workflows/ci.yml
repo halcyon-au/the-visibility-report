@@ -23,14 +23,13 @@ jobs:
         with:
           node-version: 16
           check-latest: true
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run build
-        run: npm run build
+        run: pnpm run build
 
       - name: Deploy Dist
         uses: peaceiris/actions-gh-pages@v3.8.0
@@ -50,11 +49,10 @@ jobs:
         with:
           node-version: 16
           check-latest: true
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run build
-        run: npm run lint
+        run: pnpm run lint
