@@ -18,19 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - uses: pnpm/action-setup@646cdf48217256a3d0b80361c5a50727664284f2
+        with:
+          version: 6.10.0
+
       - name: Setup node env
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           check-latest: true
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run build
-        run: npm run build
+        run: pnpm run build
 
       - name: Deploy Dist
         uses: peaceiris/actions-gh-pages@v3.8.0
@@ -45,16 +48,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - uses: pnpm/action-setup@646cdf48217256a3d0b80361c5a50727664284f2
+        with:
+          version: 6.10.0
+
       - name: Setup node env
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           check-latest: true
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run build
-        run: npm run lint
+        run: pnpm run lint

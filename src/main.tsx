@@ -1,13 +1,31 @@
+
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ChakraProvider } from "@chakra-ui/react"; // TODO: Switch To Chakra
+const container = document.getElementById("root");
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(container!);
 
-ReactDOM.render(
+const theme = createTheme({
+  typography: {
+    fontFamily: "'IBM Plex Sans', sans-serif",
+  },
+  palette: {
+    // primary: {
+    //   main: "#000000",
+    // },
+    // text: {
+    //   primary: "#ffffff",
+    // },
+  },
+});
+
+root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>
 );
