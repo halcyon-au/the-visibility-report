@@ -4,10 +4,9 @@ import { useRanking } from "../api/hooks";
 import Country from "../components/country/Country";
 import Error from "../components/country/Error";
 
-
 function IndividualCountry(props: DefaultProps) {
   const { country } = useParams();
-  const { error, data, loading } = useRanking(country!);
+  const { error, data, blockedMap, loading } = useRanking(country!);
   return (
     <>
       {loading ?
@@ -16,7 +15,7 @@ function IndividualCountry(props: DefaultProps) {
           {error ?
             <Error />
             : <>
-              <Country country={data!} />
+              <Country country={data!} blockedMapping={blockedMap!} />
             </>
           }
         </>
