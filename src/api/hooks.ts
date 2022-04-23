@@ -1,29 +1,23 @@
 import axios, { AxiosError } from "axios";
 import axiosRetry from "axios-retry";
 import { useEffect, useState } from "react";
-import { CountryScoreWBlocked } from "../useApiClient/ApiClient.generated";
+import { CountryScore, CountryScoreWBlocked, GetBlockedResponse } from "../useApiClient/ApiClient.generated";
 import useApiClient from "../useApiClient/useApiClient";
 import { OONI_URI } from "./ooni";
 
 const API_URI = import.meta.env.MODE === "development" ? (() => {
   return window.location.origin.startsWith("http://localhost") ? "http://localhost:1323/api/" : "https://api.visibilityreport.techytechster.com/api/";
 })() : "https://api.visibilityreport.techytechster.com/api/";
-export function useRankings() {
+
+export const useRankings = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CountryRanking[]>();
+  const [data, setData] = useState<CountryScore[]>();
   const [error, setError] = useState("");
+  const apiClient = useApiClient();
   const fetchData = async () => {
-    // exponential backoff with jitter
-    axiosRetry(axios, {
-      retries: 3,
-      retryDelay: (retryCount) => {
-        return Math.random() * (Math.min(10000, 1000 * (retryCount ** 2))); // https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
-      }
-    });
-    const uri = new URL("v1/countries/rankings", API_URI);
     try {
-      const request = await axios.get(uri.href);
-      setData(request.data as CountryRanking[]);
+      const request = (await apiClient.rankingsAll()).result;
+      setData(request as CountryScore[]);
     } catch (error) {
       setError(JSON.stringify((error as AxiosError).response?.data));
     } finally {
@@ -35,16 +29,17 @@ export function useRankings() {
   }, []);
   return { data, loading, error };
 }
-export function useBlocked(countryName: string, websiteName: string) {
+
+export const useBlocked = (countryName: string, websiteName: string) => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<BlockedResponse>();
+  const [data, setData] = useState<GetBlockedResponse>();
   const [error, setError] = useState("");
+  const apiClient = useApiClient();
+
   const fetchData = async (countryName: string, websiteName: string) => {
-    const uri = new URL(`v1/blocked/${countryName}/${websiteName}`, API_URI);
     try {
-      const request = await axios.get(uri.href);
-      const resp = request.data;
-      setData(resp);
+      const request = (await apiClient.blocked(countryName, websiteName)).result;
+      setData(request);
     } catch (error) {
       setError(error as string);
     } finally {
@@ -56,28 +51,30 @@ export function useBlocked(countryName: string, websiteName: string) {
   }, []);
   return { loading, data, error };
 }
-export function useWhoBlockedMe(websiteName: string) {
+
+export const useWhoBlockedMe = (websiteName: string) => {
   const [loading, setLoading] = useState(true);
   const [blocked, setBlocked] = useState<string[]>([]);
   const [unblocked, setUnblocked] = useState<string[]>([]);
   const [possible, setPossible] = useState<string[]>([]);
   const [unknown, setUnknown] = useState<string[]>([]);
   const [error, setError] = useState("");
+  const apiClient = useApiClient();
+
   const fetchData = async (websiteName: string) => {
     const country_uri = `${OONI_URI}api/_/countries`;
     const countries = (await axios.get(country_uri)).data.countries as OONICountry[];
     const promises = [];
     try {
       for (const country of countries) {
-        const uri = new URL(`v1/status/${country.name}/${websiteName}`, API_URI);
-        const request = axios.get<BlockedResponse>(uri.href);
+        const request = apiClient.status(country.name, websiteName);
         promises.push(request);
       }
       await Promise.all(promises);
       const b = [], u = [], p = [], uk = [];
       for (let i = 0; i < countries.length; i += 1) {
         const country = countries[i];
-        const data = (await promises[i]).data; // should be instant since we already did http request.
+        const data = (await promises[i]).result; // should be instant since we already did http request.
         switch (data.status) {
         case "Blocked":
           b.push(country.name);
@@ -92,6 +89,7 @@ export function useWhoBlockedMe(websiteName: string) {
           p.push(country.name);
         }
       }
+
       setBlocked(b);
       setUnblocked(u);
       setPossible(p);
@@ -111,6 +109,7 @@ export function useWhoBlockedMe(websiteName: string) {
   }, []);
   return { loading, unblocked, blocked, possible, unknown, error };
 }
+
 export function useRanking(countryName: string) {
   const apiClient = useApiClient();
   const [loading, setLoading] = useState(true);

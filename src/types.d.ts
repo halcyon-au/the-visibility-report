@@ -8,10 +8,6 @@ interface TopBarOverride extends DefaultProps {
   overrideText?: string;
 }
 
-interface RankingProps extends DefaultProps {
-  countryRank: CountryRanking;
-  number: number;
-}
 interface LandingProps extends DefaultProps {
   SEARCH_MODE?: "Country" | "Site"
 }
@@ -50,12 +46,7 @@ interface CountryRankingWBlocks {
   PossibleWebsites: string[];
   Websites: string[];
 }
-interface BlockedResponse {
-  isBlocked: boolean;
-  matchedWith: string;
-  simularity: number;
-  status: string;
-}
+
 interface WebsiteBlockedSectionProps extends DefaultProps {
   blocked: string[];
 
