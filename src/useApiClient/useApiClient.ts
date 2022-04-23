@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useMemo } from "react";
 import { ApiClient } from "./ApiClient.generated";
 
@@ -13,7 +14,10 @@ export const useApiClient = () => {
         : "https://api.visibilityreport.techytechster.com";
 
 
-    return new ApiClient(API_URI);
+    // Axios transforms the response, but we have a api client who does too
+    return new ApiClient(API_URI, axios.create({
+        transformResponse: data => data,
+    }));
   }, []);
 };
 

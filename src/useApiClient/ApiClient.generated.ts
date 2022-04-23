@@ -8,14 +8,19 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
+
 export class ApiClient {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private instance: AxiosInstance;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : window as any;
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance ? instance : axios.create();
+
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+
     }
 
     /**
@@ -24,7 +29,7 @@ export class ApiClient {
      * @param website Website
      * @return OK
      */
-    blocked(countryname: string, website: string): Promise<ApiResponse<GetBlockedResponse>> {
+    blocked(countryname: string, website: string , cancelToken?: CancelToken | undefined): Promise<ApiResponse<GetBlockedResponse>> {
         let url_ = this.baseUrl + "/api/v1/blocked/{countryname}/{website}";
         if (countryname === undefined || countryname === null)
             throw new Error("The parameter 'countryname' must be defined.");
@@ -34,37 +39,54 @@ export class ApiClient {
         url_ = url_.replace("{website}", encodeURIComponent("" + website));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: RequestInit = {
+        let options_: AxiosRequestConfig = {
             method: "GET",
+            url: url_,
             headers: {
                 "Accept": "application/json"
-            }
+            },
+            cancelToken
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
             return this.processBlocked(_response);
         });
     }
 
-    protected processBlocked(response: Response): Promise<ApiResponse<GetBlockedResponse>> {
+    protected processBlocked(response: AxiosResponse): Promise<ApiResponse<GetBlockedResponse>> {
         const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        let _mappings: { source: any, target: any }[] = [];
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetBlockedResponse;
-            return new ApiResponse(status, _headers, result200);
-            });
+            let resultData200  = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ApiResponse<GetBlockedResponse>>(new ApiResponse<GetBlockedResponse>(status, _headers, result200));
+
         } else if (status === 500) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result500: any = null;
-            result500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: string; };
+            let resultData500  = _responseText;
+            result500 = JSON.parse(resultData500);
             return throwException("Internal Server Error", status, _responseText, _headers, result500);
-            });
+
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
         }
         return Promise.resolve<ApiResponse<GetBlockedResponse>>(new ApiResponse(status, _headers, null as any));
     }
@@ -73,41 +95,58 @@ export class ApiClient {
      * Retrieve All Countries Ranked (Lower the number the worse)
      * @return OK
      */
-    rankingsAll(): Promise<ApiResponse<CountryScore[]>> {
+    rankingsAll(  cancelToken?: CancelToken | undefined): Promise<ApiResponse<CountryScore[]>> {
         let url_ = this.baseUrl + "/api/v1/countries/rankings";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: RequestInit = {
+        let options_: AxiosRequestConfig = {
             method: "GET",
+            url: url_,
             headers: {
                 "Accept": "application/json"
-            }
+            },
+            cancelToken
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
             return this.processRankingsAll(_response);
         });
     }
 
-    protected processRankingsAll(response: Response): Promise<ApiResponse<CountryScore[]>> {
+    protected processRankingsAll(response: AxiosResponse): Promise<ApiResponse<CountryScore[]>> {
         const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        let _mappings: { source: any, target: any }[] = [];
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as CountryScore[];
-            return new ApiResponse(status, _headers, result200);
-            });
+            let resultData200  = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ApiResponse<CountryScore[]>>(new ApiResponse<CountryScore[]>(status, _headers, result200));
+
         } else if (status === 500) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result500: any = null;
-            result500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: string; };
+            let resultData500  = _responseText;
+            result500 = JSON.parse(resultData500);
             return throwException("Internal Server Error", status, _responseText, _headers, result500);
-            });
+
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
         }
         return Promise.resolve<ApiResponse<CountryScore[]>>(new ApiResponse(status, _headers, null as any));
     }
@@ -117,44 +156,61 @@ export class ApiClient {
      * @param country Country Name
      * @return OK
      */
-    rankings(country: string): Promise<ApiResponse<CountryScoreWBlocked>> {
+    rankings(country: string , cancelToken?: CancelToken | undefined): Promise<ApiResponse<CountryScoreWBlocked>> {
         let url_ = this.baseUrl + "/api/v1/countries/rankings/{country}";
         if (country === undefined || country === null)
             throw new Error("The parameter 'country' must be defined.");
         url_ = url_.replace("{country}", encodeURIComponent("" + country));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: RequestInit = {
+        let options_: AxiosRequestConfig = {
             method: "GET",
+            url: url_,
             headers: {
                 "Accept": "application/json"
-            }
+            },
+            cancelToken
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
             return this.processRankings(_response);
         });
     }
 
-    protected processRankings(response: Response): Promise<ApiResponse<CountryScoreWBlocked>> {
+    protected processRankings(response: AxiosResponse): Promise<ApiResponse<CountryScoreWBlocked>> {
         const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        let _mappings: { source: any, target: any }[] = [];
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as CountryScoreWBlocked;
-            return new ApiResponse(status, _headers, result200);
-            });
+            let resultData200  = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ApiResponse<CountryScoreWBlocked>>(new ApiResponse<CountryScoreWBlocked>(status, _headers, result200));
+
         } else if (status === 500) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result500: any = null;
-            result500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: string; };
+            let resultData500  = _responseText;
+            result500 = JSON.parse(resultData500);
             return throwException("Internal Server Error", status, _responseText, _headers, result500);
-            });
+
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
         }
         return Promise.resolve<ApiResponse<CountryScoreWBlocked>>(new ApiResponse(status, _headers, null as any));
     }
@@ -163,35 +219,50 @@ export class ApiClient {
      * Perform a Hearbeat
      * @return OK
      */
-    hb(): Promise<ApiResponse<{ [key: string]: string; }>> {
+    hb(  cancelToken?: CancelToken | undefined): Promise<ApiResponse<{ [key: string]: string; }>> {
         let url_ = this.baseUrl + "/api/v1/hb";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: RequestInit = {
+        let options_: AxiosRequestConfig = {
             method: "GET",
+            url: url_,
             headers: {
                 "Accept": "application/json"
-            }
+            },
+            cancelToken
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
             return this.processHb(_response);
         });
     }
 
-    protected processHb(response: Response): Promise<ApiResponse<{ [key: string]: string; }>> {
+    protected processHb(response: AxiosResponse): Promise<ApiResponse<{ [key: string]: string; }>> {
         const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: string; };
-            return new ApiResponse(status, _headers, result200);
-            });
+            let resultData200  = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ApiResponse<{ [key: string]: string; }>>(new ApiResponse<{ [key: string]: string; }>(status, _headers, result200));
+
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
         }
         return Promise.resolve<ApiResponse<{ [key: string]: string; }>>(new ApiResponse(status, _headers, null as any));
     }
@@ -202,7 +273,7 @@ export class ApiClient {
      * @param website Website
      * @return OK
      */
-    status(countryname: string, website: string): Promise<ApiResponse<GetStatusResponse>> {
+    status(countryname: string, website: string , cancelToken?: CancelToken | undefined): Promise<ApiResponse<GetStatusResponse>> {
         let url_ = this.baseUrl + "/api/v1/status/{countryname}/{website}";
         if (countryname === undefined || countryname === null)
             throw new Error("The parameter 'countryname' must be defined.");
@@ -212,37 +283,54 @@ export class ApiClient {
         url_ = url_.replace("{website}", encodeURIComponent("" + website));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: RequestInit = {
+        let options_: AxiosRequestConfig = {
             method: "GET",
+            url: url_,
             headers: {
                 "Accept": "application/json"
-            }
+            },
+            cancelToken
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
             return this.processStatus(_response);
         });
     }
 
-    protected processStatus(response: Response): Promise<ApiResponse<GetStatusResponse>> {
+    protected processStatus(response: AxiosResponse): Promise<ApiResponse<GetStatusResponse>> {
         const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        let _mappings: { source: any, target: any }[] = [];
         if (status === 200) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetStatusResponse;
-            return new ApiResponse(status, _headers, result200);
-            });
+            let resultData200  = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ApiResponse<GetStatusResponse>>(new ApiResponse<GetStatusResponse>(status, _headers, result200));
+
         } else if (status === 400) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             let result400: any = null;
-            result400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as { [key: string]: string; };
+            let resultData400  = _responseText;
+            result400 = JSON.parse(resultData400);
             return throwException("Bad Request", status, _responseText, _headers, result400);
-            });
+
         } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
+            const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
         }
         return Promise.resolve<ApiResponse<GetStatusResponse>>(new ApiResponse(status, _headers, null as any));
     }
@@ -274,6 +362,68 @@ export interface GetStatusResponse {
     isBlocked?: boolean | undefined;
     matchedWith?: string | undefined;
     similarity?: number | undefined;
+    status?: string | undefined;
+}
+
+function jsonParse(json: any, reviver?: any) {
+    json = JSON.parse(json, reviver);
+
+    var byid: any = {};
+    var refs: any = [];
+    json = (function recurse(obj: any, prop?: any, parent?: any) {
+        if (typeof obj !== 'object' || !obj)
+            return obj;
+
+        if ("$ref" in obj) {
+            let ref = obj.$ref;
+            if (ref in byid)
+                return byid[ref];
+            refs.push([parent, prop, ref]);
+            return undefined;
+        } else if ("$id" in obj) {
+            let id = obj.$id;
+            delete obj.$id;
+            if ("$values" in obj)
+                obj = obj.$values;
+            byid[id] = obj;
+        }
+
+        if (Array.isArray(obj)) {
+            obj = obj.map((v, i) => recurse(v, i, obj));
+        } else {
+            for (var p in obj) {
+                if (obj.hasOwnProperty(p) && obj[p] && typeof obj[p] === 'object')
+                    obj[p] = recurse(obj[p], p, obj);
+            }
+        }
+
+        return obj;
+    })(json);
+
+    for (let i = 0; i < refs.length; i++) {
+        const ref = refs[i];
+        ref[0][ref[1]] = byid[ref[2]];
+    }
+
+    return json;
+}
+
+function createInstance<T>(data: any, mappings: any, type: any): T | null {
+  if (!mappings)
+    mappings = [];
+  if (!data)
+    return null;
+
+  const mappingIndexName = "__mappingIndex";
+  if (data[mappingIndexName])
+    return <T>mappings[data[mappingIndexName]].target;
+
+  data[mappingIndexName] = mappings.length;
+
+  let result: any = new type();
+  mappings.push({ source: data, target: result });
+  result.init(data, mappings);
+  return result;
 }
 
 export class ApiResponse<TResult> {
@@ -315,4 +465,8 @@ export class ApiException extends Error {
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
     throw new ApiException(message, status, response, headers, result);
+}
+
+function isAxiosError(obj: any | undefined): obj is AxiosError {
+    return obj && obj.isAxiosError === true;
 }
