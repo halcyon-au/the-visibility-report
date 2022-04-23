@@ -3,7 +3,7 @@ import { useRankings } from "../api/hooks";
 import Ranking from "../components/countriesranked/Ranking";
 import TopBar from "../components/countriesranked/TopBar";
 
-function CountriesRanked() {
+export const CountriesRanked = () => {
   const { loading, data } = useRankings();
   return (
     <>
@@ -19,11 +19,11 @@ function CountriesRanked() {
         {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
         {!loading ?
           <div id="rankings" className="grid grid-cols-3">
-            <Ranking key={data![1].CountryName} countryRank={data![1]} number={2} />
-            <Ranking key={data![0].CountryName} countryRank={data![0]} number={1} />
-            <Ranking key={data![2].CountryName} countryRank={data![2]} number={3} />
+            <Ranking key={data![1].countryName} countryRank={data![1]} number={2} />
+            <Ranking key={data![0].countryName} countryRank={data![0]} number={1} />
+            <Ranking key={data![2].countryName} countryRank={data![2]} number={3} />
             {data!.slice(3).map((ranking, idx) => (
-              <Ranking key={ranking.CountryName} countryRank={ranking} number={idx + 4} />
+              <Ranking key={ranking.countryName} countryRank={ranking} number={idx + 4} />
             ))}
           </div> : <>
             TODO: Loading Indicator
@@ -33,6 +33,6 @@ function CountriesRanked() {
       </div>
     </>
   );
-}
+};
 export default styled(CountriesRanked)`
 `;
