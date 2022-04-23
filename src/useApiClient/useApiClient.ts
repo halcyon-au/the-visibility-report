@@ -16,7 +16,7 @@ export const useApiClient = () => {
 
     // Axios transforms the response, but we have a api client who does too
     return new ApiClient(API_URI, axios.create({
-        transformResponse: data => data,
+      transformResponse: data => data,
     }));
   }, []);
 };
