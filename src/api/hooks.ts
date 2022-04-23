@@ -122,7 +122,6 @@ export function useRanking(countryName: string) {
     try {
       const resp = (await apiClient.rankings(countryName)).result;
       const blockedMap = new Map<string, WebsiteStatus>();
-      console.log(resp)
       for (const web of resp.websites ?? []) {
         let blocked: WebsiteStatus = { Blocked: false };
         for (const bWeb of resp.blockedWebsites ?? []) {
