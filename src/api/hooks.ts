@@ -1,6 +1,8 @@
 import axios, { AxiosError } from "axios";
 import axiosRetry from "axios-retry";
 import { useEffect, useState } from "react";
+import { CountryScoreWBlocked } from "../useApiClient/ApiClient.generated";
+import useApiClient from "../useApiClient/useApiClient";
 import { OONI_URI } from "./ooni";
 
 const API_URI = import.meta.env.MODE === "development" ? (() => {
@@ -110,43 +112,38 @@ export function useWhoBlockedMe(websiteName: string) {
   return { loading, unblocked, blocked, possible, unknown, error };
 }
 export function useRanking(countryName: string) {
+  const apiClient = useApiClient();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CountryRankingWBlocks>();
+  const [data, setData] = useState<CountryScoreWBlocked>();
+  const [blockedMap, setBlockedMap] = useState<Map<string, WebsiteStatus>>();
   const [error, setError] = useState("");
+
   const fetchData = async (countryName: string) => {
-    axiosRetry(axios, {
-      retries: 3,
-      retryDelay: (retryCount) => {
-        return Math.random() * (Math.min(10000, 1000 * (retryCount ** 2))); // https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
-      }
-    });
-    const uri = new URL(`v1/countries/rankings/${countryName}`, API_URI);
     try {
-      const request = await axios.get(uri.href);
-      const resp = request.data as CountryRankingWBlocks;
+      const resp = (await apiClient.rankings(countryName)).result;
       const blockedMap = new Map<string, WebsiteStatus>();
-      for (const web of resp.Websites) {
+      for (const web of resp.websites ?? []) {
         let blocked: WebsiteStatus = { Blocked: false };
-        for (const bWeb of resp.BlockedWebsites) {
+        for (const bWeb of resp.blockedWebsites ?? []) {
           if (bWeb.toUpperCase() === web.toUpperCase()) {
             blocked = { Blocked: true };
             break;
           }
         }
-        for (const pWeb of resp.PossibleWebsites) {
+        for (const pWeb of resp.possibleWebsites ?? []) {
           if (pWeb.toUpperCase() === web.toUpperCase()) {
             blocked.Possible = true;
             break;
           }
         }
         if (!blockedMap.get(web.toUpperCase())) {
-          // console.log(web.toUpperCase());
           blockedMap.set(web.toUpperCase(), blocked);
         }
       }
-      resp.BlockedMapping = blockedMap;
-      setData(request.data as CountryRankingWBlocks);
+      setBlockedMap(blockedMap);
+      setData(resp);
     } catch (error) {
+      console.log(error);
       setError(JSON.stringify((error as AxiosError).response?.data));
     } finally {
       setLoading(false);
@@ -155,5 +152,5 @@ export function useRanking(countryName: string) {
   useEffect(() => {
     fetchData(countryName);
   }, []);
-  return { loading, data, error };
+  return { loading, data, blockedMap, error };
 }

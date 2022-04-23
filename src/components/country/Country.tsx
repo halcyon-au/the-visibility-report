@@ -3,13 +3,20 @@ import countryToFlagJSON from "../../api/countrytoflag.json";
 import WebsiteEntry from "./WebsiteEntry";
 import { accuweather, amazon, baidu, bbc, bilibili, bing, discord, docomo, duckduckgo, ebay, facebook, fandom, globo, google, instagram, linkedin, mailru, microsoft, miguvideo, msn, naver, netflix, office365, outlook, pinterest, pornhub, powerlanguage, qq, reddit, roblox, samsung, tiktok, twitch, twitter, vk, weather, whatsapp, wikipedia, xhamster, xvideos, yahoo, yandex, youtube, zoom } from "../../assets/img/Icons";
 import { useState } from "react";
+import { CountryScoreWBlocked } from "../../useApiClient/ApiClient.generated";
+interface IndividualCountryProps extends DefaultProps {
+  country: CountryScoreWBlocked;
+  blockedMapping: Map<string, WebsiteStatus>;
+}
+
 function Country(props: IndividualCountryProps) {
-  const { country, className } = props;
+  const { country, className, blockedMapping } = props;
   const [topFiftyPage, setTopFiftyPage] = useState(1);
   function webBlocked(uri: string) {
-    return country.BlockedMapping.get(`HTTPS://${uri.toUpperCase()}`) || country.BlockedMapping.get(`HTTPS://WWW.${uri.toUpperCase()}`) || country.BlockedMapping.get(`HTTPS://WWW.${uri.toUpperCase()}/`) || country.BlockedMapping.get(`HTTPS://${uri.toUpperCase()}/`)
-      || country.BlockedMapping.get(`HTTP://${uri.toUpperCase()}`) || country.BlockedMapping.get(`HTTP://WWW.${uri.toUpperCase()}`) || country.BlockedMapping.get(`HTTP://WWW.${uri.toUpperCase()}/`) || country.BlockedMapping.get(`HTTP://${uri.toUpperCase()}/`);
+    return blockedMapping.get(`HTTPS://${uri.toUpperCase()}`) || blockedMapping.get(`HTTPS://WWW.${uri.toUpperCase()}`) || blockedMapping.get(`HTTPS://WWW.${uri.toUpperCase()}/`) || blockedMapping.get(`HTTPS://${uri.toUpperCase()}/`)
+      || blockedMapping.get(`HTTP://${uri.toUpperCase()}`) || blockedMapping.get(`HTTP://WWW.${uri.toUpperCase()}`) || blockedMapping.get(`HTTP://WWW.${uri.toUpperCase()}/`) || blockedMapping.get(`HTTP://${uri.toUpperCase()}/`);
   }
+
   return (
     <div className={className}>
       {country ? <>
@@ -19,12 +26,12 @@ function Country(props: IndividualCountryProps) {
               <div className="flex-1">
                 <h1 className="text-white text-4xl mb-3">THE VISIBILITY REPORT</h1>
                 <div className="flex">
-                  <h2 className="text-white text-6xl mt-1 mr-12">{country.CountryName}</h2>
-                  <img src={(countryToFlagJSON as any)[country.CountryName].image} alt={country.CountryName} className="w-20" />
+                  <h2 className="text-white text-6xl mt-1 mr-12">{country.countryName}</h2>
+                  <img src={(countryToFlagJSON as any)[country.countryName!]?.image} alt={country.countryName} className="w-20" />
                 </div>
               </div>
               <div className="flex justify-center items-center text-8xl">
-                <h3 className="text-white">#{country.Ranking}</h3>
+                <h3 className="text-white">#{country.ranking}</h3>
               </div>
             </div>
           </div>
@@ -104,7 +111,7 @@ function Country(props: IndividualCountryProps) {
             <div className="inline-block bg-black text-white w-14 text-center my-2 py-1 cursor-pointer" onClick={() => setTopFiftyPage(topFiftyPage + 1 < 6 ? topFiftyPage + 1 : 1)}>NEXT</div>
             <h4 className="mt-4 mb-2 text-4xl">ALL BLOCKED SITES</h4>
             <div className="grid grid-cols-5 gap-3 max-h-96 overflow-y-auto">
-              {country.BlockedWebsites.map((website) =>
+              {country.blockedWebsites?.map((website: string) =>
                 <WebsiteEntry website={website} blocked={{ Blocked: true }} key={website} />
               )}
             </div>

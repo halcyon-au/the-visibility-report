@@ -7,9 +7,7 @@ interface SectionProps extends DefaultProps {
 interface TopBarOverride extends DefaultProps {
   overrideText?: string;
 }
-interface IndividualCountryProps extends DefaultProps {
-  country: CountryRankingWBlocks
-}
+
 interface RankingProps extends DefaultProps {
   countryRank: CountryRanking;
   number: number;
