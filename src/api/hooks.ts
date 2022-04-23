@@ -28,7 +28,7 @@ export const useRankings = () => {
     fetchData();
   }, []);
   return { data, loading, error };
-}
+};
 
 export const useBlocked = (countryName: string, websiteName: string) => {
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ export const useBlocked = (countryName: string, websiteName: string) => {
     fetchData(countryName, websiteName);
   }, []);
   return { loading, data, error };
-}
+};
 
 export const useWhoBlockedMe = (websiteName: string) => {
   const [loading, setLoading] = useState(true);
@@ -108,7 +108,7 @@ export const useWhoBlockedMe = (websiteName: string) => {
     fetchData(websiteName);
   }, []);
   return { loading, unblocked, blocked, possible, unknown, error };
-}
+};
 
 export function useRanking(countryName: string) {
   const apiClient = useApiClient();

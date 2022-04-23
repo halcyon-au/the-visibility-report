@@ -33,6 +33,6 @@ export const CountriesRanked = () => {
       </div>
     </>
   );
-}
+};
 export default styled(CountriesRanked)`
 `;
