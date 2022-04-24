@@ -5,22 +5,23 @@ import Country from "../components/country/Country";
 import Error from "../components/country/Error";
 
 function IndividualCountry(props: DefaultProps) {
+  const { className } = props;
   const { country } = useParams();
-  const { error, data, blockedMap, loading } = useRanking(country!);
+  const { data, isLoading, isError } = useRanking(country!);
   return (
-    <>
-      {loading ?
+    <div className={className}>
+      {isLoading ?
         <>TODO LOADER</>
         : <>
-          {error ?
+          {!isError && data ?
+            <>
+              <Country country={data.countryRankings} />
+            </> :
             <Error />
-            : <>
-              <Country country={data!} blockedMapping={blockedMap!} />
-            </>
           }
         </>
       }
-    </>
+    </div>
   );
 }
 export default styled(IndividualCountry)`

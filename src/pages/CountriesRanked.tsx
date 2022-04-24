@@ -4,7 +4,7 @@ import Ranking from "../components/countriesranked/Ranking";
 import TopBar from "../components/countriesranked/TopBar";
 
 export const CountriesRanked = () => {
-  const { loading, data } = useRankings();
+  const { isLoading, data, isError } = useRankings();
   return (
     <>
       <TopBar />
@@ -17,7 +17,7 @@ export const CountriesRanked = () => {
         </p>
         { /* TODO: remove */}
         {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
-        {!loading ?
+        {!isLoading ?
           <div id="rankings" className="grid grid-cols-3">
             <Ranking key={data![1].countryName} countryRank={data![1]} number={2} />
             <Ranking key={data![0].countryName} countryRank={data![0]} number={1} />
