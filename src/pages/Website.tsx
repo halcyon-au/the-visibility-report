@@ -8,21 +8,27 @@ import Unblocked from "../components/website/Unblocked";
 import Unknown from "../components/website/Unknown";
 
 function Website(props: DefaultProps) {
+  const { className } = props;
   const { site } = useParams();
-  const { error, loading, unblocked, blocked, unknown, possible } = useWhoBlockedMe(site!);
+  const { isError, isLoading, data } = useWhoBlockedMe(site!);
   return (
-    <>
+    <div className={className}>
       <TopBar />
       <div className="container mx-auto">
-        {!loading ? <>
-          <Blocked sectionItems={blocked} className="my-5" />
-          <Possible sectionItems={possible} className="my-5" />
-          <Unblocked sectionItems={unblocked} className="my-5" />
-          <Unknown sectionItems={unknown} className="my-5" />
-        </> : <h1>loading mmm yep</h1>
+        {!isLoading ?
+          !isError && data ? <>
+            <Blocked sectionItems={data.blocked} className="my-5" />
+            <Possible sectionItems={data.possible} className="my-5" />
+            <Unblocked sectionItems={data.unblocked} className="my-5" />
+            <Unknown sectionItems={data.unknown} className="my-5" />
+          </> : 
+            <>
+              <h1>ERROR</h1>
+            </>
+          : <h1>loading mmm yep</h1>
         }
       </div>
-    </>
+    </div>
   );
 }
 export default styled(Website)`

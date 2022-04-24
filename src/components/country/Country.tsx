@@ -4,13 +4,14 @@ import WebsiteEntry from "./WebsiteEntry";
 import { accuweather, amazon, baidu, bbc, bilibili, bing, discord, docomo, duckduckgo, ebay, facebook, fandom, globo, google, instagram, linkedin, mailru, microsoft, miguvideo, msn, naver, netflix, office365, outlook, pinterest, pornhub, powerlanguage, qq, reddit, roblox, samsung, tiktok, twitch, twitter, vk, weather, whatsapp, wikipedia, xhamster, xvideos, yahoo, yandex, youtube, zoom } from "../../assets/img/Icons";
 import { useState } from "react";
 import { CountryScoreWBlocked } from "../../useApiClient/ApiClient.generated";
+import { useBlockedMapping } from "../../api/hooks";
 interface IndividualCountryProps extends DefaultProps {
   country: CountryScoreWBlocked;
-  blockedMapping: Map<string, WebsiteStatus>;
 }
 
 function Country(props: IndividualCountryProps) {
-  const { country, className, blockedMapping } = props;
+  const { country, className } = props;
+  const blockedMapping = useBlockedMapping(country);
   const [topFiftyPage, setTopFiftyPage] = useState(1);
   function webBlocked(uri: string) {
     return blockedMapping.get(`HTTPS://${uri.toUpperCase()}`) || blockedMapping.get(`HTTPS://WWW.${uri.toUpperCase()}`) || blockedMapping.get(`HTTPS://WWW.${uri.toUpperCase()}/`) || blockedMapping.get(`HTTPS://${uri.toUpperCase()}/`)
