@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 import axiosRetry from "axios-retry";
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { CountryScore, CountryScoreWBlocked, GetBlockedResponse } from "../useApiClient/ApiClient.generated";
 import useApiClient from "../useApiClient/useApiClient";
 import { OONI_URI } from "./ooni";
@@ -10,24 +11,25 @@ const API_URI = import.meta.env.MODE === "development" ? (() => {
 })() : "https://api.visibilityreport.techytechster.com/api/";
 
 export const useRankings = () => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CountryScore[]>();
-  const [error, setError] = useState("");
   const apiClient = useApiClient();
-  const fetchData = async () => {
-    try {
-      const request = (await apiClient.rankingsAll()).result;
-      setData(request as CountryScore[]);
-    } catch (error) {
-      setError(JSON.stringify((error as AxiosError).response?.data));
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  return { data, loading, error };
+  // const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState<CountryScore[]>();
+  // const [error, setError] = useState("");
+  // const fetchData = async () => {
+  //   try {
+  //     const request = (await apiClient.rankingsAll()).result;
+  //     setData(request as CountryScore[]);
+  //   } catch (error) {
+  //     setError(JSON.stringify((error as AxiosError).response?.data));
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+  // return { data, loading, error };
+  return useQuery(["rankings"], async () => (await apiClient.rankingsAll()).result);
 };
 
 export const useBlocked = (countryName: string, websiteName: string) => {
