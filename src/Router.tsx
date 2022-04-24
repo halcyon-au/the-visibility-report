@@ -3,6 +3,7 @@ import CountriesRanked from "./pages/CountriesRanked";
 import Country from "./pages/Country";
 import IndividualCountry from "./pages/IndividualCountry";
 import Landing from "./pages/Landing";
+import NotFound from "./pages/NotFound";
 import Site from "./pages/Site";
 import Website from "./pages/Website";
 
@@ -16,7 +17,8 @@ export default function Router() {
         <Route path="/country/:country" element={<IndividualCountry />} />
         <Route path="/site" element={<Site />} />
         <Route path="/country/rankings" element={<CountriesRanked />} />
-        <Route path="/site/:site" element={<Website />} />
+        <Route path="/site/:site*" element={<Website />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
